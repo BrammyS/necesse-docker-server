@@ -24,16 +24,17 @@ docker run -d \
 
 ## Configurations
 
-| ENV variable    	| Default value           	| Description                                                                            	        |
-|-----------------	|-------------------------	|-------------------------------------------------------------------------------------------------  |
-| `WORLD`            	| `world` 	                                    | The name of the world that will be used.                                  |
-| `SLOTS`            	| `10` 	                                        | The Amount of player slots.                                               |
-| `OWNER`            	| `` 	                                        | Anyone that connects with this name, will get owner permissions.          |
-| `MOTD`            	| `"This server is made possible by Docker!"`   | Sets the message of the day. Use \n for new line.                         |
-| `PASSWORD`            | `` 	                                        | The password for the server, blank for no password.                       |
-| `PAUSE`            	| `0` 	                                        | Pauses the world when there are no players in server. (`0` off, `1` on)   |
-| `LOGGING`            	| `1` 	                                        | Generate a log file for each session. (`0` off, `1` on)                   |
-| `ZIP`            	    | `1` 	                                        | Wether saves should be compressed. (`0` off, `1` on)                      |
+| ENV variable    	| Default value           	| Description                                                                            	                                                    |
+|-----------------	|-------------------------	|---------------------------------------------------------------------------------------------------------------------------------------------  |
+| `WORLD`            	| `world` 	                                    | The name of the world that will be used.                                                                              |
+| `SLOTS`            	| `10` 	                                        | The Amount of player slots.                                                                                           |
+| `OWNER`            	| `` 	                                        | Anyone that connects with this name, will get owner permissions.                                                      |
+| `MOTD`            	| `"This server is made possible by Docker!"`   | Sets the message of the day. Use \n for new line.                                                                     |
+| `PASSWORD`            | `` 	                                        | The password for the server, blank for no password.                                                                   |
+| `ANTI_CHEAT`          | `0` 	                                        | Whether the server should check clients action. Experience will be much smoother when turned off. (`0` off, `1` on)   |
+| `PAUSE`            	| `0` 	                                        | Pauses the world when there are no players in server. (`0` off, `1` on)                                               |
+| `LOGGING`            	| `1` 	                                        | Generate a log file for each session. (`0` off, `1` on)                                                               |
+| `ZIP`            	    | `1` 	                                        | Wether saves should be compressed. (`0` off, `1` on)                                                                  |
 
 ## Volumes
 

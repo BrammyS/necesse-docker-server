@@ -7,7 +7,6 @@ ARG build
 ARG url
 EXPOSE 14159/udp
 VOLUME  [                       \
-    "/necesse/cfg/server.cfg",  \ 
     "/necesse/logs",            \
     "/necesse/saves"            \
 ]
@@ -19,6 +18,7 @@ ENV OWNER=""
 ENV MOTD="This server is made possible by Docker!"
 ENV PASSWORD=""
 ENV PAUSE=0
+ENV ANTI_CHEAT=0
 ENV LOGGING=1
 ENV ZIP=1
 
@@ -40,7 +40,6 @@ RUN unzip necesse-server-linux64-${version}-${build}.zip
 # Move server files to generic necesse folder.
 RUN mv -v /necesse-server-${version}-${build}/* /necesse/
 
-COPY ./cfg/server.cfg /necesse/cfg/server.cfg
 RUN chmod -R +x /necesse/jre
 WORKDIR /necesse
 ENTRYPOINT [ "./jre/bin/java",\
@@ -53,6 +52,7 @@ ENTRYPOINT [ "./jre/bin/java",\
     "-motd", "$MOTD",\
     "-password", "$PASSWORD",\
     "-pausewhenempty", "$PAUSE",\
+    "-giveclientspower", "$ANTI_CHEAT",\
     "-logging", "$LOGGING",\
     "-zipsaves", "$ZIP"\
 ]

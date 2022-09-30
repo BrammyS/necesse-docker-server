@@ -1,5 +1,4 @@
 name: Build docker images
-run-name: Build ${{matrix.version}}-${{matrix.build}}
 
 on:
   push:
@@ -10,6 +9,7 @@ on:
       - '.github/workflows/publish_images.yml'
 jobs:
   build:
+    name: Build ${{matrix.version}}-${{matrix.build}}
     runs-on: ubuntu-22.04
     timeout-minutes: 15
     strategy:

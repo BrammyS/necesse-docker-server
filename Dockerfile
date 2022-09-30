@@ -35,6 +35,9 @@ COPY ./cfg/worldSettings.cfg /necesse/saves/world/worldSettings.cfg
 # Add the correct world version to worldSettings.cfg. 
 RUN sed -i s/99.99.99/${version}/g /necesse/saves/world/worldSettings.cfg
 
+RUN ls /
+RUN ls /necesse
+
 RUN chmod -R +x /necesse/jre
 
 WORKDIR /necesse

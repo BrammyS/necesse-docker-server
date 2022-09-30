@@ -6,7 +6,6 @@ ARG version
 ARG build
 ARG url
 VOLUME /necesse/saves
-VOLUME /necesse/cfg
 VOLUME /necesse/logs
 EXPOSE 14159/udp
 
@@ -26,19 +25,12 @@ RUN wget ${url}
 RUN unzip necesse-server-linux64-${version}-${build}.zip
 
 # Move server files to generic necesse folder.
-RUN mv -v /necesse-server-${version}-${build}/* /necesse/
+RUN mv /necesse-server-${version}-${build} /necesse
 
 # Moved server and word configs.
 COPY ./cfg/server.cfg /necesse/cfg/server.cfg
-COPY ./cfg/worldSettings.cfg /necesse/saves/world/worldSettings.cfg
-
-# Add the correct world version to worldSettings.cfg. 
-RUN sed -i s/99.99.99/${version}/g /necesse/saves/world/worldSettings.cfg
-
-RUN ls /
-RUN ls /necesse
 
 RUN chmod -R +x /necesse/jre
 
 WORKDIR /necesse
-ENTRYPOINT [ "./jre/bin/java", "-jar", "Server.jar", "-nogui", "-localdir", "-settings", "/necesse/cfg/server.cfg" ]
+ENTRYPOINT [ "./jre/bin/java", "-jar", "Server.jar", "-nogui", "-localdir" ]

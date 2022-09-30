@@ -1,16 +1,26 @@
 FROM ubuntu:22.04
 LABEL maintainer "BrammyS <https://github.com/BrammyS>"
 
-# Misc configurations
+# Misc configurations.
 ARG version
 ARG build
 ARG url
 EXPOSE 14159/udp
-VOLUME  [                               \
-            "/necesse/cfg/server.cfg",  \ 
-            "/necesse/logs",            \
-            "/necesse/saves"            \
-        ]
+VOLUME  [                       \
+    "/necesse/cfg/server.cfg",  \ 
+    "/necesse/logs",            \
+    "/necesse/saves"            \
+]
+
+# Server configs.
+ENV WORLD=world
+ENV SLOTS=10
+ENV OWNER=""
+ENV MOTD="This server is made possible by Docker!"
+ENV PASSWORD=""
+ENV PAUSE=0
+ENV LOGGING=1
+ENV ZIP=1
 
 # Update local pacakges.
 RUN apt-get update --no-install-recommends
@@ -33,4 +43,16 @@ RUN mv -v /necesse-server-${version}-${build}/* /necesse/
 COPY ./cfg/server.cfg /necesse/cfg/server.cfg
 RUN chmod -R +x /necesse/jre
 WORKDIR /necesse
-ENTRYPOINT [ "./jre/bin/java", "-jar", "Server.jar", "-nogui", "-localdir" ]
+ENTRYPOINT [ "./jre/bin/java",\
+    "-jar", "Server.jar",\
+    "-nogui",\
+    "-localdir",\
+    "-world", "$WORLD",\
+    "-slots", "$SLOTS",\
+    "-owner", "$OWNER",\
+    "-motd", "$MOTD",\
+    "-password", "$PASSWORD",\
+    "-pausewhenempty", "$PAUSE",\
+    "-logging", "$LOGGING",\
+    "-zipsaves", "$ZIP"\
+]

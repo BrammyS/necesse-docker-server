@@ -35,4 +35,4 @@ RUN sed -i s/99.99.99/${version}/g /root/.config/Necesse/saves/world/worldSettin
 
 RUN chmod +x /necesse-server/StartServer-nogui.sh
 RUN chmod -R +x /necesse-server/jre
-ENTRYPOINT ["/necesse-server/StartServer-nogui.sh"]
+ENTRYPOINT [ "./necesse-server/jre/bin/java", "-jar", "/necesse-server/Server.jar", "-nogui", "-localdir" ]

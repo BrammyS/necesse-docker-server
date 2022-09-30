@@ -5,9 +5,12 @@ LABEL maintainer "BrammyS <https://github.com/BrammyS>"
 ARG version
 ARG build
 ARG url
-VOLUME /necesse/saves
-VOLUME /necesse/logs
 EXPOSE 14159/udp
+VOLUME  [                               \
+            "/necesse/cfg/server.cfg",  \ 
+            "/necesse/logs",            \
+            "/necesse/saves"            \
+        ]
 
 # Update local pacakges.
 RUN apt-get update --no-install-recommends
@@ -27,10 +30,7 @@ RUN unzip necesse-server-linux64-${version}-${build}.zip
 # Move server files to generic necesse folder.
 RUN mv -v /necesse-server-${version}-${build}/* /necesse/
 
-# Moved server and word configs.
 COPY ./cfg/server.cfg /necesse/cfg/server.cfg
-
 RUN chmod -R +x /necesse/jre
-
 WORKDIR /necesse
 ENTRYPOINT [ "./jre/bin/java", "-jar", "Server.jar", "-nogui", "-localdir" ]

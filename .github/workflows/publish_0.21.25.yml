@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'Dockerfile'
+      - 'cfg/server.cfg'
+      - 'cfg/worldSettings.cfg'
 jobs:
   build:
     runs-on: ${{ matrix.os }}

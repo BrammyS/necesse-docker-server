@@ -4,6 +4,7 @@ LABEL maintainer "BrammyS <https://github.com/BrammyS>"
 # Misc configurations
 ARG version
 ARG build
+ARG url
 VOLUME /root/.config/Necesse
 EXPOSE 14159/udp
 
@@ -19,7 +20,7 @@ RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Install necesse server files.
-RUN wget https://necessegame.com/wp-content/uploads/2022/09/necesse-server-linux64-${version}-${build}.zip
+RUN wget ${url}
 RUN unzip necesse-server-linux64-${version}-${build}.zip
 
 # Move server files to the correct folder.

@@ -10,7 +10,7 @@ docker run --name necesse-server brammys/necesse-server
 
 ## Supported tags and respective `Dockerfile` links
 
-* [`latest`, `0.21.25` (Dockerfile)](https://github.com/BrammyS/mongodump-docker/blob/main/Dockerfile)
+* [`latest`, `0.21.25` (Dockerfile)](https://github.com/BrammyS/necesse-docker-server/blob/main/Dockerfile)
 
 ## Configurations
 

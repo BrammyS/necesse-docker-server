@@ -6,6 +6,7 @@ on:
       - 'Dockerfile'
       - 'cfg/server.cfg'
       - 'cfg/worldSettings.cfg'
+      - '.github/workflows/publish_images.yml'
 jobs:
   build:
     runs-on: ubuntu-22.04

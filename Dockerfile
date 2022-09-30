@@ -1,8 +1,11 @@
 FROM ubuntu:22.04
 LABEL maintainer "BrammyS <https://github.com/BrammyS>"
+
+# Misc configurations
 ARG version
 ARG build
 VOLUME /root/.config/Necesse
+EXPOSE 14159/udp
 
 # Update local pacakges.
 RUN apt-get update --no-install-recommends

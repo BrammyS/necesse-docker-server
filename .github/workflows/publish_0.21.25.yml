@@ -1,4 +1,4 @@
-name: Build docker image 0.21.25
+name: Build docker images
 
 on:
   push:
@@ -8,11 +8,13 @@ on:
       - 'cfg/worldSettings.cfg'
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-22.04
     timeout-minutes: 15
     strategy:
       matrix:
-        os: [ubuntu-22.04]
+        include:
+          - version: 0-21-25
+            build: 9593077
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -26,13 +28,13 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           
       - name: Build image
-        run: docker build --build-arg version=0-21-25 --build-arg build=9593077 -t brammys/necesse-server:0.21.25 -f ./Dockerfile .
+        run: docker build --build-arg version=${{matrix.version}} --build-arg build=${{matrix.build}} -t brammys/necesse-server:${{matrix.version}} -f ./Dockerfile .
         
       - name: Publish image
-        run: docker push brammys/necesse-server:0.21.25
+        run: docker push brammys/necesse-server:${{matrix.version}}
 
       - name: Tag latest image
-        run: docker tag brammys/necesse-server:0.21.25 brammys/necesse-server:latest
+        run: docker tag brammys/necesse-server:${{matrix.version}} brammys/necesse-server:latest
         
       - name: Publish latest image
         run: docker push brammys/necesse-server:latest

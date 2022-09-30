@@ -5,7 +5,7 @@ Start your own dedicated Necesse server with a single command!
 ## Examples
 
 ```bash
-docker run --name necesse-server brammys/necesse-server
+docker run -p 14159:14159 --name necesse-server brammys/necesse-server
 ```
 
 ## Supported tags and respective `Dockerfile` links

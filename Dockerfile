@@ -46,7 +46,7 @@ ENTRYPOINT [ "./jre/bin/java",\
     "-jar", "Server.jar",\
     "-nogui",\
     "-localdir",\
-    "-world", ${$WORLD},\
+    "-world", ${WORLD},\
     "-slots", ${SLOTS},\
     "-owner", ${OWNER},\
     "-motd", ${MOTD},\

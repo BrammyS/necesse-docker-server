@@ -9,7 +9,7 @@ on:
       - '.github/workflows/publish_images.yml'
 jobs:
   build:
-    name: Tag ${{matrix.version}}-${{matrix.build}} build
+    name: brammys/necesse-server:${{matrix.version}}
     runs-on: ubuntu-22.04
     timeout-minutes: 15
     strategy:
@@ -28,8 +28,6 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
-        
-      - run: echo ${{matrix.version}}-${{matrix.build}}
       
       - name: Log in to Docker Hub
         uses: docker/login-action@v2

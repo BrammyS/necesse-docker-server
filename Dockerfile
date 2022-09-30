@@ -24,13 +24,10 @@ RUN apt-get clean \
 RUN wget ${url}
 RUN unzip necesse-server-linux64-${version}-${build}.zip
 
-# Move server files to generic necesse folder.
-RUN mv /necesse-server-${version}-${build} /necesse
-
 # Moved server and word configs.
-COPY ./cfg/server.cfg /necesse/cfg/server.cfg
+COPY ./cfg/server.cfg /necesse-server-${version}-${build}/cfg/server.cfg
 
-RUN chmod -R +x /necesse/jre
+RUN chmod -R +x /necesse-server-${version}-${build}/jre
 
-WORKDIR /necesse
+WORKDIR /necesse-server-${version}-${build}
 ENTRYPOINT [ "./jre/bin/java", "-jar", "Server.jar", "-nogui", "-localdir" ]

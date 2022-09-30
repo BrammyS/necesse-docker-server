@@ -46,13 +46,13 @@ ENTRYPOINT [ "./jre/bin/java",\
     "-jar", "Server.jar",\
     "-nogui",\
     "-localdir",\
-    "-world", "$WORLD",\
-    "-slots", "$SLOTS",\
-    "-owner", "$OWNER",\
-    "-motd", "$MOTD",\
-    "-password", "$PASSWORD",\
-    "-pausewhenempty", "$PAUSE",\
-    "-giveclientspower", "$ANTI_CHEAT",\
-    "-logging", "$LOGGING",\
-    "-zipsaves", "$ZIP"\
+    "-world", "echo $WORLD",\
+    "-slots", "echo $SLOTS",\
+    "-owner", "echo $OWNER",\
+    "-motd", "echo $MOTD",\
+    "-password", "echo $PASSWORD",\
+    "-pausewhenempty", "echo $PAUSE",\
+    "-giveclientspower", "echo $ANTI_CHEAT",\
+    "-logging", "echo $LOGGING",\
+    "-zipsaves", "echo $ZIP"\
 ]

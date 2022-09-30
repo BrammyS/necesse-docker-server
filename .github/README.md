@@ -24,6 +24,8 @@ docker run -d \
 
 ## Configurations
 
+### Environment variables
+
 | ENV variable    	| Default value           	| Description                                                                            	                                                    |
 |-----------------	|-------------------------	|---------------------------------------------------------------------------------------------------------------------------------------------  |
 | `WORLD`            	| `world` 	                                    | The name of the world that will be used.                                                                              |
@@ -36,9 +38,15 @@ docker run -d \
 | `LOGGING`            	| `1` 	                                        | Generate a log file for each session. (`0` off, `1` on)                                                               |
 | `ZIP`            	    | `1` 	                                        | Wether saves should be compressed. (`0` off, `1` on)                                                                  |
 
-## Volumes
+### Volumes
 
-| path       	            | Description                                                   |
+| Path       	            | Description                                                   |
 |---------------------------|-----------------------------------------------------------    |
 | `/necesse/saves`       	| The folder containing all the world saves.                    |
 | `/necesse/logs`        	| The folder containing all the logs of the server.             |
+
+### Ports
+
+| Port       	            | Description                                                   |
+|---------------------------|-----------------------------------------------------------    |
+| `14159/udp`       	    | The game runs on UDP port `14159`.                            |

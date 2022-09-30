@@ -7,7 +7,7 @@ Start your own dedicated Necesse server with a single command!
 ### New world
 
 The following command creates a server with `strong_pass` for the password.
-And it also generates a new world.\
+And it also generates a new world.
 
 ```bash
 docker run -d \

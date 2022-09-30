@@ -4,6 +4,28 @@ Start your own dedicated Necesse server with a single command!
 
 ## Examples
 
+### New world
+
+The following command creates a server with `strong_pass` for the password.
+And it also generates a new world.\
+
+```bash
+docker run -d \
+    -v /necesse/saves:/necesse/saves \
+    -p 14159:14159/udp \
+    -e PASSWORD=strong_pass \
+    -e PAUSE=1 \
+    --restart=always \
+    --name necesse-server \
+    brammys/necesse-server
+```
+
+### Existing world
+
+First move your existing `WORLD_NAME` file to the `/necesse/saves` directory.
+Use the following command to start your server with your provided world.
+Be use to replace `WORLD_NAME` with your actual world name.
+
 ```bash
 docker run -d \
     -v /necesse/saves:/necesse/saves \
@@ -11,6 +33,7 @@ docker run -d \
     -p 14159:14159/udp \
     -e PASSWORD=strong_pass \
     -e PAUSE=1 \
+    -e WORLD=WORLD_NAME \
     --restart=always \
     --name necesse-server \
     brammys/necesse-server

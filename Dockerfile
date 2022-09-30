@@ -25,7 +25,7 @@ RUN wget ${url}
 RUN unzip necesse-server-linux64-${version}-${build}.zip
 
 # Move server files to generic necesse folder.
-RUN mv /necesse-server-${version}-${build} /necesse
+RUN mv -v /necesse-server-${version}-${build}/* /necesse/
 
 # Moved server and word configs.
 COPY ./cfg/server.cfg /necesse/cfg/server.cfg

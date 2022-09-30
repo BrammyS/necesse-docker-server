@@ -1,0 +1,36 @@
+name: Build docker image 0.21.25
+
+on:
+  push:
+    paths:
+      - 'Dockerfile'
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        os: [ubuntu-22.04]
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+        
+      - run: echo ${{matrix.os}}
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          
+      - name: Build image
+        run: docker build --build-arg version=0-21-25-9593077 -t brammys/necesse-server:0.21.25 -f ./Dockerfile .
+        
+      - name: Publish image
+        run: docker push brammys/necesse-server:0.21.25
+
+      - name: Tag latest image
+        run: docker tag brammys/necesse-server:0.21.25 brammys/necesse-server:latest
+        
+      - name: Publish latest image
+        run: docker push brammys/necesse-server:latest

@@ -1,4 +1,5 @@
 name: Build docker images
+run-name: Build ${{matrix.version}}-${{matrix.build}}
 
 on:
   push:

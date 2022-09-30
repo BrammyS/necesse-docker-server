@@ -16,7 +16,7 @@ docker run --name necesse-server brammys/necesse-server
 
 | ENV variable    	| Default value           	| Description                                                                            	|
 |-----------------	|-------------------------	|----------------------------------------------------------------------------------------	|
-|                	| None 	                    | None                                                                                     	|
+| None            	| None 	                    | None                                                                                     	|
 
 ## Volumes
 

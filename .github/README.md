@@ -29,7 +29,6 @@ Be use to replace `WORLD_NAME` with your actual world name.
 ```bash
 docker run -d \
     -v /necesse/saves:/necesse/saves \
-    -v /necesse/logs:/necesse/logs \
     -p 14159:14159/udp \
     -e PASSWORD=strong_pass \
     -e PAUSE=1 \
@@ -37,6 +36,15 @@ docker run -d \
     --restart=always \
     --name necesse-server \
     brammys/necesse-server
+```
+
+### Docker-compose
+
+You can also use the provided [docker-compose.yaml](https://github.com/BrammyS/necesse-docker-server/blob/main/docker-compose.yaml) file.
+Use the following command to start your dedicated server with docker-compose.
+
+```bash
+docker-compose up -d
 ```
 
 ## Supported tags and respective `Dockerfile` links

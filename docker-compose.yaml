@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  necesse:
+    container_name: necesse-server
+    image: brammys/necesse-server
+    restart: always
+    ports:
+      -  14159:14159
+    environment:
+      MOTD: Your own custom message of today!
+      PASSWORD: strong_pass
+      SLOTS: 25
+      PAUSE: 1
+    volumes:
+      - /necesse/saves:/necesse/saves
+      - /necesse/logs:/necesse/logs

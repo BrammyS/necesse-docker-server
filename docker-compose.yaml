@@ -1,4 +1,4 @@
-version: '3.8'
+version: "2.0"
 
 services:
   necesse:
@@ -6,7 +6,7 @@ services:
     image: brammys/necesse-server
     restart: always
     ports:
-      -  14159:14159
+      -  14159:14159/udp
     environment:
       MOTD: Your own custom message of today!
       PASSWORD: strong_pass

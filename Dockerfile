@@ -22,8 +22,8 @@ ENV ANTI_CHEAT=0
 ENV LOGGING=1
 ENV ZIP=1
 
-# Install wget and unzip and cleanup package cache.
-RUN apk --update add wget unzip
+# Install java, wget and unzip and cleanup package cache.
+RUN apk --update add wget unzip openjdk8=8.242.08-r0
 RUN rm -rf /var/cache/apk/*
 
 # Install necesse server files.
@@ -31,12 +31,14 @@ RUN wget ${url}
 RUN unzip necesse-server-linux64-${version}-${build}.zip
 
 # Move server files to generic necesse folder.
-RUN mv -v /necesse-server-${version}-${build}/* /necesse/
+ARG dir=/necesse-server-${version}-${build}
+RUN rm -d -r ${dir}/jre
+RUN mv -v ${dir}/* /necesse/
+RUN rm -d ${dir}
 
-RUN chmod -R +x /necesse/jre
 WORKDIR /necesse
-ENTRYPOINT /necesse/jre/bin/java \
--jar /necesse/Server.jar \
+ENTRYPOINT java \
+-jar Server.jar \
 -nogui -localdir \
 -world ${WORLD} \
 -slots ${SLOTS} \

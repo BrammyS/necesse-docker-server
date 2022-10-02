@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM alpine:3.16
 LABEL maintainer "BrammyS <https://github.com/BrammyS>"
 
 # Misc configurations.
@@ -22,16 +22,9 @@ ENV ANTI_CHEAT=0
 ENV LOGGING=1
 ENV ZIP=1
 
-# Update local pacakges.
-RUN apt-get update --no-install-recommends
-
-# Install wget and unzip.
-RUN apt-get -y install wget
-RUN apt-get -y install unzip
-
-# Cleanup the local pacakges.
-RUN apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Install wget and unzip and cleanup package cache.
+RUN apk --update add wget unzip
+RUN rm -rf /var/cache/apk/*
 
 # Install necesse server files.
 RUN wget ${url}

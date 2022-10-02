@@ -35,8 +35,8 @@ RUN mv -v /necesse-server-${version}-${build}/* /necesse/
 
 RUN chmod -R +x /necesse/jre
 WORKDIR /necesse
-ENTRYPOINT ./jre/bin/java \
--jar Server.jar \
+ENTRYPOINT /necesse/jre/bin/java \
+-jar /necesse/Server.jar \
 -nogui -localdir \
 -world ${WORLD} \
 -slots ${SLOTS} \

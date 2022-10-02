@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3
 LABEL maintainer "BrammyS <https://github.com/BrammyS>"
 
 # Misc configurations.
@@ -23,7 +23,8 @@ ENV LOGGING=1
 ENV ZIP=1
 
 # Install java, wget and unzip and cleanup package cache.
-RUN apk --update add wget unzip openjdk8=8.242.08-r0
+RUN apk --update add wget unzip 
+RUN apk add openjdk8 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 RUN rm -rf /var/cache/apk/*
 
 # Install necesse server files.

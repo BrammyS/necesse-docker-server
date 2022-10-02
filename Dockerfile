@@ -33,9 +33,9 @@ RUN unzip necesse-server-linux64-${version}-${build}.zip
 
 # Move server files to generic necesse folder.
 ARG dir=/necesse-server-${version}-${build}
-RUN rm -d -r ${dir}/jre
+RUN rm -rf ${dir}/jre
 RUN mv -v ${dir}/* /necesse/
-RUN rm -d ${dir}
+RUN rm -rf ${dir}
 
 WORKDIR /necesse
 ENTRYPOINT java \

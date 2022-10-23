@@ -1,10 +1,9 @@
-name: Build docker images
+name: Build old docker images
 
 on:
   push:
     paths:
       - 'Dockerfile'
-      - '.github/workflows/publish_images.yml'
 jobs:
   build:
     name: brammys/necesse-server:${{matrix.version}}
@@ -13,10 +12,12 @@ jobs:
     strategy:
       matrix:
         include:
-          - version: 0-21-25
-            build: 9650339
-            url: https://necessegame.com/wp-content/uploads/2022/10/necesse-server-linux64-0-21-25-9650339.zip
-            latest: true
+          - version: 0-21-24
+            build: 9363221
+            url: https://necessegame.com/wp-content/uploads/2022/08/necesse-server-linux64-0-21-24-9363221.zip
+          - version: 0-21-23
+            build: 9096788
+            url: https://necessegame.com/wp-content/uploads/2022/07/necesse-server-linux64-0-21-23-9096788.zip
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -32,11 +33,3 @@ jobs:
         
       - name: Publish image
         run: docker push brammys/necesse-server:${{matrix.version}}
-
-      - name: Tag latest image
-        if: ${{matrix.latest}}
-        run: docker tag brammys/necesse-server:${{matrix.version}} brammys/necesse-server:latest
-        
-      - name: Publish latest image
-        if: ${{matrix.latest}}
-        run: docker push brammys/necesse-server:latest

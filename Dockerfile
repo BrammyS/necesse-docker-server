@@ -18,7 +18,7 @@ ENV OWNER=""
 ENV MOTD="This server is made possible by Docker!"
 ENV PASSWORD=""
 ENV PAUSE=0
-ENV ANTI_CHEAT=0
+ENV GIVE_CLIENTS_POWER=0
 ENV LOGGING=1
 ENV ZIP=1
 
@@ -47,6 +47,6 @@ ENTRYPOINT java \
 -motd "${MOTD}" \
 -password "${PASSWORD}" \
 -pausewhenempty ${PAUSE} \
--giveclientspower ${ANTI_CHEAT} \
+-giveclientspower ${GIVE_CLIENTS_POWER} \
 -logging ${LOGGING} \
 -zipsaves ${ZIP}

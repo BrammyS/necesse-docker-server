@@ -49,7 +49,8 @@ docker-compose up -d
 
 ## Supported tags and respective `Dockerfile` links
 
-* [`latest`, `0.21.25` (Dockerfile)](https://github.com/BrammyS/necesse-docker-server/blob/main/Dockerfile)
+* [`latest`, `0.21.26` (Dockerfile)](https://github.com/BrammyS/necesse-docker-server/blob/main/Dockerfile)
+* [`0.21.25` (Dockerfile)](https://github.com/BrammyS/necesse-docker-server/blob/main/Dockerfile)
 * [`0.21.24` (Dockerfile)](https://github.com/BrammyS/necesse-docker-server/blob/main/Dockerfile)
 * [`0.21.23` (Dockerfile)](https://github.com/BrammyS/necesse-docker-server/blob/main/Dockerfile)
 

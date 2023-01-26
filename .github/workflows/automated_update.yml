@@ -1,0 +1,35 @@
+name: Automated update
+
+on:
+  push:
+    paths:
+      - '.github/workflows/automated_update.yml'
+  schedule:
+    # Runs every hour
+    - cron:  '0 * * * *'
+
+env:
+  DOCKER_IMAGE: brammys/necesse-server-version-scraper
+
+jobs:
+  update:
+    name: Check for updates
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "7.0.x"
+
+      - name: Add MongoDb username
+        run: dotnet user-secrets set "Mongodb:Username" "${{ env.MONGODB_USERNAME}}" --project "./src/NecesseScraper/NecesseScraper.csproj"
+
+      - name: Add MongoDb password
+        run: dotnet user-secrets set "Mongodb:Password" "${{ env.Password}}" --project "./src/NecesseScraper/NecesseScraper.csproj"
+
+      - name: Publish image
+        run: docker pull ${{ env.DOCKER_IMAGE }}

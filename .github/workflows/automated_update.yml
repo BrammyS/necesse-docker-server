@@ -44,7 +44,7 @@ jobs:
         id: workflow-changes
         with:
           files: |
-             publish_images.yml
+             .github/workflows/publish_images.yml
 
       - name: Create Pull Request
         if: steps.workflow-changes.outputs.files_changed == 'true'

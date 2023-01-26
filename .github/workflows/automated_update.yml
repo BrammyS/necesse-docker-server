@@ -35,6 +35,9 @@ jobs:
       - name: Pull image
         run: docker pull ${{ env.DOCKER_IMAGE }}
 
+      - name: test
+        run: cat ~/.microsoft/usersecrets/${{ env.USER_SECRETS_ID}}:/root/.microsoft/usersecrets/${{ env.USER_SECRETS_ID}}
+
       - name: Run updater
         run: docker run -v '/home/runner/work/necesse-docker-server/necesse-docker-server/.github/workflows/publish_images.yml:/app/publish_images.yml' -v ~/.microsoft/usersecrets/${{ env.USER_SECRETS_ID}}:/root/.microsoft/usersecrets/${{ env.USER_SECRETS_ID}} ${{ env.DOCKER_IMAGE }}
 

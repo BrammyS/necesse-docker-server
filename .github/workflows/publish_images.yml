@@ -7,9 +7,14 @@ on:
     paths:
       - 'Dockerfile'
       - '.github/workflows/publish_images.yml'
+
+env:
+  DOCKER_IMAGE: brammys/necesse-server
+
+
 jobs:
   build:
-    name: brammys/necesse-server:${{matrix.version}}
+    name: ${{ env.DOCKER_IMAGE }}:${{matrix.version}}
     runs-on: ubuntu-22.04
     timeout-minutes: 15
     strategy:
@@ -30,15 +35,15 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           
       - name: Build image
-        run: docker build --build-arg url=${{matrix.url}} --build-arg version=${{matrix.version}} --build-arg build=${{matrix.build}} -t brammys/necesse-server:${{matrix.version}} -f ./Dockerfile .
+        run: docker build --build-arg url=${{matrix.url}} --build-arg version=${{matrix.version}} --build-arg build=${{matrix.build}} -t ${{ env.DOCKER_IMAGE }}:${{matrix.version}} -f ./Dockerfile .
         
       - name: Publish image
-        run: docker push brammys/necesse-server:${{matrix.version}}
+        run: docker push ${{ env.DOCKER_IMAGE }}:${{matrix.version}}
 
       - name: Tag latest image
         if: ${{matrix.latest}}
-        run: docker tag brammys/necesse-server:${{matrix.version}} brammys/necesse-server:latest
+        run: docker tag ${{ env.DOCKER_IMAGE }}:${{matrix.version}} ${{ env.DOCKER_IMAGE }}:latest
         
       - name: Publish latest image
         if: ${{matrix.latest}}
-        run: docker push brammys/necesse-server:latest
+        run: docker push ${{ env.DOCKER_IMAGE }}:latest

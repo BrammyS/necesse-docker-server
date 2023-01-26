@@ -47,14 +47,9 @@ Use the following command to start your dedicated server with docker-compose.
 docker-compose up -d
 ```
 
-## Supported tags and respective `Dockerfile` links
+## Supported tags
 
-* [`latest`, `0.21.28` (Dockerfile)](https://github.com/BrammyS/necesse-docker-server/blob/main/Dockerfile)
-* [`0.21.27` (Dockerfile)](https://github.com/BrammyS/necesse-docker-server/blob/main/Dockerfile)
-* [`0.21.26` (Dockerfile)](https://github.com/BrammyS/necesse-docker-server/blob/main/Dockerfile)
-* [`0.21.25` (Dockerfile)](https://github.com/BrammyS/necesse-docker-server/blob/main/Dockerfile)
-* [`0.21.24` (Dockerfile)](https://github.com/BrammyS/necesse-docker-server/blob/main/Dockerfile)
-* [`0.21.23` (Dockerfile)](https://github.com/BrammyS/necesse-docker-server/blob/main/Dockerfile)
+All suported tags can be found on [dockerhub](https://hub.docker.com/r/brammys/necesse-server/tags).
 
 ## Configurations
 

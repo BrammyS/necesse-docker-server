@@ -9,6 +9,7 @@ on:
     - cron:  '0 * * * *'
 
 env:
+  MONGODB_USERNAME: NecesseScraper
   USER_SECRETS_ID: 6b77af8f-db3e-4b78-920a-e28ccc9a67bc
   DOCKER_IMAGE: brammys/necesse-server-version-scraper
 
@@ -27,7 +28,7 @@ jobs:
           dotnet-version: "7.0.x"
 
       - name: Add MongoDb username
-        run: dotnet user-secrets set "Mongodb:Username" "${{ secrets.MONGODB_USERNAME}}" --id ${{ env.USER_SECRETS_ID}}
+        run: dotnet user-secrets set "Mongodb:Username" "${{ env.MONGODB_USERNAME}}" --id ${{ env.USER_SECRETS_ID}}
 
       - name: Add MongoDb password
         run: dotnet user-secrets set "Mongodb:Password" "${{ secrets.MONGODB_PASSWORD}}" --id ${{ env.USER_SECRETS_ID}}
@@ -38,12 +39,15 @@ jobs:
       - name: Run updater
         run: docker run -v '/home/runner/work/necesse-docker-server/necesse-docker-server/.github/workflows/publish_images.yml:/app/publish_images.yml' -v ~/.microsoft/usersecrets/${{ env.USER_SECRETS_ID}}:/root/.microsoft/usersecrets/${{ env.USER_SECRETS_ID}} ${{ env.DOCKER_IMAGE }}
 
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v35
+      - name: Verify workflow changes
+        uses: tj-actions/verify-changed-files@v13
+        id: workflow-changes
+        with:
+          files: |
+             publish_images.yml
 
       - name: Create Pull Request
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: steps.workflow-changes.outputs.files_changed == 'true'
         uses: peter-evans/create-pull-request@v4
         with:
           delete-branch: true

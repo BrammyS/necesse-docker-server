@@ -11,11 +11,10 @@ on:
 env:
   DOCKER_IMAGE: brammys/necesse-server
 
-
 jobs:
   build:
     name: ${{ env.DOCKER_IMAGE }}:${{matrix.version}}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
       matrix:

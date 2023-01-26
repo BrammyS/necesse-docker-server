@@ -51,7 +51,11 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.PAT }}
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           delete-branch: true
+          assignees: BrammyS
+          reviewers: BrammyS
           commit-message: Update version
           branch: server-version-bump
           title: "Bump: Necesse server version"

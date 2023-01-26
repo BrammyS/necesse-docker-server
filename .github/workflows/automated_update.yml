@@ -26,10 +26,10 @@ jobs:
           dotnet-version: "7.0.x"
 
       - name: Add MongoDb username
-        run: dotnet user-secrets set "Mongodb:Username" "${{ env.MONGODB_USERNAME}}" --project "./src/NecesseScraper/NecesseScraper.csproj"
+        run: dotnet user-secrets set "Mongodb:Username" "${{ env.MONGODB_USERNAME}}" --id 6b77af8f-db3e-4b78-920a-e28ccc9a67bc
 
       - name: Add MongoDb password
-        run: dotnet user-secrets set "Mongodb:Password" "${{ env.Password}}" --project "./src/NecesseScraper/NecesseScraper.csproj"
+        run: dotnet user-secrets set "Mongodb:Password" "${{ env.Password}}" --id 6b77af8f-db3e-4b78-920a-e28ccc9a67bc
 
       - name: Publish image
         run: docker pull ${{ env.DOCKER_IMAGE }}

@@ -36,7 +36,7 @@ jobs:
         run: docker pull ${{ env.DOCKER_IMAGE }}
 
       - name: Run updater
-        run: docker run -v '/home/runner/work/necesse-docker-server/necesse-docker-server/.github/workflows/publish_images.yml:/app/publish_images.yml' -v $HOME/.microsoft/usersecrets/${{ env.USER_SECRETS_ID}}:/root/.microsoft/usersecrets/${{ env.USER_SECRETS_ID}} ${{ env.DOCKER_IMAGE }}
+        run: docker run -v '/home/runner/work/necesse-docker-server/necesse-docker-server/.github/workflows/publish_images.yml:/app/publish_images.yml' -v ~/.microsoft/usersecrets/${{ env.USER_SECRETS_ID}}:/root/.microsoft/usersecrets/${{ env.USER_SECRETS_ID}} ${{ env.DOCKER_IMAGE }}
 
       - name: Get changed files
         id: changed-files

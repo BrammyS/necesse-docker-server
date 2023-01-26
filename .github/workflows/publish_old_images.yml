@@ -6,9 +6,13 @@ on:
       - main
     paths:
       - 'Dockerfile'
+
+env:
+  DOCKER_IMAGE: brammys/necesse-server
+
 jobs:
   build:
-    name: brammys/necesse-server:${{matrix.version}}
+    name: ${{ env.DOCKER_IMAGE }}:${{matrix.version}}
     runs-on: ubuntu-22.04
     timeout-minutes: 15
     strategy:
@@ -40,7 +44,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           
       - name: Build image
-        run: docker build --build-arg url=${{matrix.url}} --build-arg version=${{matrix.version}} --build-arg build=${{matrix.build}} -t brammys/necesse-server:${{matrix.version}} -f ./Dockerfile .
+        run: docker build --build-arg url=${{matrix.url}} --build-arg version=${{matrix.version}} --build-arg build=${{matrix.build}} -t ${{ env.DOCKER_IMAGE }}:${{matrix.version}} -f ./Dockerfile .
         
       - name: Publish image
-        run: docker push brammys/necesse-server:${{matrix.version}}
+        run: docker push ${{ env.DOCKER_IMAGE }}:${{matrix.version}}

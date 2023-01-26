@@ -27,13 +27,10 @@ jobs:
           dotnet-version: "7.0.x"
 
       - name: Add MongoDb username
-        run: dotnet user-secrets set "Mongodb:Username" "${{ env.MONGODB_USERNAME}}" --id ${{ env.USER_SECRETS_ID}}
+        run: dotnet user-secrets set "Mongodb:Username" "${{ secrets.MONGODB_USERNAME}}" --id ${{ env.USER_SECRETS_ID}}
 
       - name: Add MongoDb password
-        run: dotnet user-secrets set "Mongodb:Password" "${{ env.MONGODB_PASSWORD}}" --id ${{ env.USER_SECRETS_ID}}
-
-      - name: test
-        run: cat ~/.microsoft/usersecrets/${{ env.USER_SECRETS_ID}}/secrets.json
+        run: dotnet user-secrets set "Mongodb:Password" "${{ secrets.MONGODB_PASSWORD}}" --id ${{ env.USER_SECRETS_ID}}
 
       - name: Pull image
         run: docker pull ${{ env.DOCKER_IMAGE }}
@@ -44,12 +41,6 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v35
-
-      - name: Run step if any file(s) in the docs folder change
-        if: steps.changed-files.outputs.any_changed == 'true'
-        run: |
-          echo "One or more files have changed."
-          echo "List all the files that have changed: ${{ steps.changed-files.outputs.all_changed_files }}"
 
       - name: Create Pull Request
         if: steps.changed-files.outputs.any_changed == 'true'

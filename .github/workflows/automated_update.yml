@@ -27,10 +27,10 @@ jobs:
           dotnet-version: "7.0.x"
 
       - name: Add MongoDb username
-        run: dotnet user-secrets set "Mongodb:Username" ${{ env.MONGODB_USERNAME}} --id ${{ env.USER_SECRETS_ID}}
+        run: dotnet user-secrets set "Mongodb:Username" "${{ env.MONGODB_USERNAME}}" --id ${{ env.USER_SECRETS_ID}}
 
       - name: Add MongoDb password
-        run: dotnet user-secrets set "Mongodb:Password" ${{ env.Password}} --id ${{ env.USER_SECRETS_ID}}
+        run: dotnet user-secrets set "Mongodb:Password" "${{ env.MONGODB_PASSWORD}}" --id ${{ env.USER_SECRETS_ID}}
 
       - name: Pull image
         run: docker pull ${{ env.DOCKER_IMAGE }}

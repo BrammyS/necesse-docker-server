@@ -43,11 +43,6 @@ jobs:
             type=raw,value=${{matrix.version}}
             type=raw,value=${{matrix.version}}-${{matrix.build}}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-        with:
-          driver-opts: network=host
-
       - name: Build and export to Docker hub
         uses: docker/build-push-action@v3
         with:

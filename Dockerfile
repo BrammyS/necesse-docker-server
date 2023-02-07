@@ -1,4 +1,5 @@
-FROM alpine:3
+# Setup base image
+FROM alpine:3 AS base
 
 LABEL maintainer="BrammyS <https://github.com/BrammyS>"
 LABEL org.label-schema.name="brammys/necesse-server"
@@ -33,15 +34,19 @@ RUN apk --update add wget unzip
 RUN apk add openjdk8 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 RUN rm -rf /var/cache/apk/*
 
+# Setup build image
+FROM alpine:3 AS build
+
 # Install necesse server files.
 RUN wget ${url}
 RUN unzip necesse-server-linux64-${version}-${build}.zip
+RUN rm -rf ${dir}/jre
+
+# Setup final image
+FROM base AS final
 
 # Move server files to generic necesse folder.
-ARG dir=necesse-server-${version}-${build}
-RUN rm -rf ${dir}/jre
-RUN mv -v ${dir}/* /necesse/
-RUN rm -rf ${dir}
+COPY --from=build /necesse-server-${version}-${build} /necesse/
 
 WORKDIR /necesse
 ENTRYPOINT java \

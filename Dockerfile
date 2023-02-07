@@ -35,7 +35,7 @@ RUN apk add openjdk8 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/comm
 RUN rm -rf /var/cache/apk/*
 
 # Setup build image
-FROM alpine:3 AS build
+FROM base AS build
 
 # Install necesse server files.
 RUN wget ${url}

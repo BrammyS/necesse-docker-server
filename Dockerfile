@@ -1,5 +1,11 @@
 FROM alpine:3
-LABEL maintainer "BrammyS <https://github.com/BrammyS>"
+
+LABEL maintainer="BrammyS <https://github.com/BrammyS>"
+LABEL org.label-schema.name="brammys/necesse-server"
+LABEL org.label-schema.description="A Docker image for a dedicated Necesse game server."
+LABEL org.label-schema.vendor="BrammyS"
+LABEL org.label-schema.url="https://github.com/BrammyS/necesse-docker-server"
+LABEL org.label-schema.docker.cmd="docker run -d -v /necesse/saves:/necesse/saves -p 14159:14159/udp -e PASSWORD=strong_pass -e PAUSE=1 --restart=always --name necesse-server brammys/necesse-server"
 
 # Misc configurations.
 ARG version

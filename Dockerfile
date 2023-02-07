@@ -38,7 +38,7 @@ RUN wget ${url}
 RUN unzip necesse-server-linux64-${version}-${build}.zip
 
 # Move server files to generic necesse folder.
-ARG dir=/necesse-server-${version}-${build}
+ARG dir=necesse-server-${version}-${build}
 RUN rm -rf ${dir}/jre
 RUN mv -v ${dir}/* /necesse/
 RUN rm -rf ${dir}

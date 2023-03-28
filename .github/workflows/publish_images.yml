@@ -21,7 +21,7 @@ jobs:
         include:
           - version: 0-21-29
             build: 10873534
-            url: https://necessegame.com/wp-content/uploads/2023/03/necesse-server-linux64-0-21-29-10873534-1.zip
+            url: https://necessegame.com/wp-content/uploads/2023/03/necesse-server-linux64-0-21-29-10873534.zip
             latest: true
     steps:
       - name: Check out the repo

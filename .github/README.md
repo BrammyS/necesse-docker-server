@@ -55,17 +55,18 @@ All suported tags can be found on [dockerhub](https://hub.docker.com/r/brammys/n
 
 ### Environment variables
 
-| ENV variable    	| Default value           	| Description                                                                            	                                                    |
-|-----------------	|-------------------------	|---------------------------------------------------------------------------------------------------------------------------------------------  |
-| `WORLD`            	| `world` 	                                    | The name of the world that will be used.                                                                              |
-| `SLOTS`            	| `10` 	                                        | The Amount of player slots.                                                                                           |
-| `OWNER`            	| `` 	                                        | Anyone that connects with this name, will get owner permissions.                                                      |
-| `MOTD`            	| `"This server is made possible by Docker!"`   | Sets the message of the day. Use \n for new line.                                                                     |
-| `PASSWORD`            | `` 	                                        | The password for the server, blank for no password.                                                                   |
-| `GIVE_CLIENTS_POWER`  | `0` 	                                        | Whether the server should check clients action. Experience will be much smoother when turned off. (`0` off, `1` on)   |
-| `PAUSE`            	| `0` 	                                        | Pauses the world when there are no players in server. (`0` off, `1` on)                                               |
-| `LOGGING`            	| `1` 	                                        | Generate a log file for each session. (`0` off, `1` on)                                                               |
-| `ZIP`            	    | `1` 	                                        | Wether saves should be compressed. (`0` off, `1` on)                                                                  |
+| ENV variable    	    | Default value           	                    | Description                                                                            	                                             |
+|-------------------	|-------------------------------------------	|------------------------------------------------------------------------------------------------------------------------------------    |
+| `WORLD`            	| `world` 	                                    | The name of the world that will be used.                                                                                               |
+| `SLOTS`            	| `10` 	                                        | The Amount of player slots.                                                                                                            |
+| `OWNER`            	| `` 	                                        | Anyone that connects with this name, will get owner permissions.                                                                       |
+| `MOTD`            	| `"This server is made possible by Docker!"`   | Sets the message of the day. Use \n for new line.                                                                                      |
+| `PASSWORD`            | `` 	                                        | The password for the server, blank for no password.                                                                                    |
+| `GIVE_CLIENTS_POWER`  | `0` 	                                        | Whether the server should check clients action. Experience will be much smoother when turned off. (`0` off, `1` on)                    |
+| `PAUSE`            	| `0` 	                                        | Pauses the world when there are no players in server. (`0` off, `1` on)                                                                |
+| `LOGGING`            	| `1` 	                                        | Generate a log file for each session. (`0` off, `1` on)                                                                                |
+| `ZIP`            	    | `1` 	                                        | Whether saves should be compressed. (`0` off, `1` on)                                                                                  |
+| `JVMARGS`            	| `` 	                                        | Any extra arguments to supply to the JVM via the [java command](https://docs.oracle.com/en/java/javase/17/docs/specs/man/java.html).   |
 
 ### Volumes
 

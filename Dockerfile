@@ -28,6 +28,7 @@ ENV PAUSE=0
 ENV GIVE_CLIENTS_POWER=0
 ENV LOGGING=1
 ENV ZIP=1
+ENV JVMARGS=""
 
 # Install java, wget and unzip and cleanup package cache.
 RUN apk --update add wget unzip 
@@ -49,7 +50,7 @@ FROM base AS final
 COPY --from=build /necesse-server-${version}-${build} /necesse/
 
 WORKDIR /necesse
-ENTRYPOINT java \
+ENTRYPOINT java ${JVMARGS} \
 -jar Server.jar \
 -nogui -localdir \
 -world ${WORLD} \

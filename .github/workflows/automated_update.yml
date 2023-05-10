@@ -8,7 +8,7 @@ on:
       - '.github/workflows/automated_update.yml'
   schedule:
     # Runs every hour
-    - cron:  '0 * * * *'
+    - cron:  '0 */2 * * *'
 
 env:
   MONGODB_USERNAME: NecesseScraper

@@ -21,7 +21,8 @@ jobs:
         include:
           - version: 0-22-0
             build: 11997575
-            url: https://necessegame.com/wp-content/uploads/2023/08/necesse-server-windows64-0-22-0-11997575.zip            latest: true
+            url: https://necessegame.com/wp-content/uploads/2023/08/necesse-server-windows64-0-22-0-11997575.zip     
+    latest: true
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3

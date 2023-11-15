@@ -1,6 +1,6 @@
 # Necesse-docker-server
 
-Start your own dedicated Necesse server with a single command!
+Start your own dedicated Necesse server with a **single** command!
 
 ## Examples
 

@@ -42,7 +42,7 @@ jobs:
         run: docker run -v /home/runner/work/necesse-docker-server/necesse-docker-server/.github/workflows/publish_images.yml:/app/publish_images.yml -v ~/.microsoft/usersecrets/${{ env.USER_SECRETS_ID}}:/root/.microsoft/usersecrets/${{ env.USER_SECRETS_ID}} ${{ env.DOCKER_IMAGE }}
 
       - name: Verify workflow changes
-        uses: tj-actions/verify-changed-files@v13
+        uses: tj-actions/verify-changed-files@v17
         id: workflow-changes
         with:
           files: |

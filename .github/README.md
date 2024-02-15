@@ -24,7 +24,7 @@ docker run -d \
 
 First move your existing `WORLD_NAME` file to the `/necesse/saves` directory.
 Use the following command to start your server with your provided world.
-Be use to replace `WORLD_NAME` with your actual world name.
+Be sure to replace `WORLD_NAME` with your actual world name.
 
 ```bash
 docker run -d \

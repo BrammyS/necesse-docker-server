@@ -19,9 +19,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - version: 0-24-0
-            build: 13700620
-            url: https://necessegame.com/wp-content/uploads/2024/03/necesse-server-linux64-0-24-0-13700620.zip     
+          - version: 0-24-1
+            build: 13800958
+            url: https://necessegame.com/wp-content/uploads/2024/03/necesse-server-linux64-0-24-1-13800958.zip     
             latest: true
     steps:
       - name: Check out the repo

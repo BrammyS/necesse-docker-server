@@ -27,7 +27,7 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "7.0.x"
+          dotnet-version: "8.0.x"
 
       - name: Add MongoDb username
         run: dotnet user-secrets set "Mongodb:Username" "${{ env.MONGODB_USERNAME}}" --id ${{ env.USER_SECRETS_ID}}

@@ -21,7 +21,7 @@ jobs:
         include:
           - version: 0-26-1
             build: 15334865
-            url: http://necessegame.com/content/server/0-26-1-15396124/necesse-server-linux64-0-26-1-15396124.zip
+            url: https://necessegame.com/content/server/0-26-1-15396124/necesse-server-linux64-0-26-1-15396124.zip
             latest: true
     steps:
       - name: Check out the repo

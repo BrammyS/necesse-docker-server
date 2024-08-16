@@ -1,5 +1,3 @@
-version: "2.0"
-
 services:
   necesse:
     container_name: necesse-server

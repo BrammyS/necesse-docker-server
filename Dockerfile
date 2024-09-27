@@ -32,7 +32,7 @@ ENV JVMARGS=""
 
 # Install java, wget and unzip and cleanup package cache.
 RUN apk --update add wget unzip 
-RUN apk add openjdk8 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+RUN apk add openjdk17
 RUN rm -rf /var/cache/apk/*
 
 # Setup build image

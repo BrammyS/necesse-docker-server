@@ -20,8 +20,8 @@ jobs:
       matrix:
         include:
           - version: 0-30-0
-            build: 17108740
-            url: https://necessegame.com/content/server/0-30-0-17108740/necesse-server-linux64-0-30-0-17108740.zip
+            build: 17129871
+            url: https://necessegame.com/content/server/0-30-0-17129871/necesse-server-linux64-0-30-0-17129871.zip
             latest: true
     steps:
       - name: Check out the repo

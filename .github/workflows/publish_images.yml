@@ -10,70 +10,66 @@ on:
 
 env:
   DOCKER_IMAGE: brammys/necesse-server
-  DOWNLOAD_PAGE_URL: https://necessegame.com
 
 jobs:
   build:
-    name: Build and Push Docker Image
+    name: Build latest Necesse server
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Check out the repo
         uses: actions/checkout@v5
 
-      - name: Scrape version and download URL
+      - name: Scrape latest download info
         id: scrape
+        shell: bash
         run: |
-          # Download the page
-          wget -q -O page.html "${{ env.DOWNLOAD_PAGE_URL }}"
-          
-          # Extract the Linux64 download link using grep/sed
-          # Looking for pattern: <a href="/content/server/.../necesse-server-linux64-....zip">Linux64 - v... build ...</a>
-          LINK=$(grep -oP 'href="(/content/server/[^"]*necesse-server-linux64[^"]*\.zip)"' page.html | head -1 | sed 's/href="\(.*\)"/\1/')
-          TEXT=$(grep -oP '<a href="/content/server/[^"]*necesse-server-linux64[^"]*\.zip">\K[^<]*' page.html | head -1)
-          
-          # Build full URL
-          FULL_URL="${{ env.DOWNLOAD_PAGE_URL }}${LINK}"
-          
-          # Extract version and build from the text (e.g., "Linux64 - v1.0.1 build 20436084")
-          VERSION=$(echo "$TEXT" | grep -oP 'v\K[0-9]+\.[0-9]+\.[0-9]+')
-          BUILD=$(echo "$TEXT" | grep -oP 'build \K[0-9]+')
-          VERSION_DASHED=$(echo "$VERSION" | tr '.' '-')
-          
-          echo "url=$FULL_URL" >> $GITHUB_OUTPUT
-          echo "version=$VERSION_DASHED" >> $GITHUB_OUTPUT
-          echo "version_dotted=$VERSION" >> $GITHUB_OUTPUT
-          echo "build=$BUILD" >> $GITHUB_OUTPUT
-
-          echo "Scraped version: v$VERSION (build $BUILD)"
-          echo "Download URL: $FULL_URL"
-
-      - name: Check if version already exists
-        id: check_version
-        run: |
-          VERSION="${{ steps.scrape.outputs.version }}"
-          BUILD="${{ steps.scrape.outputs.build }}"
-          TAG="${VERSION}-${BUILD}"
-          
-          if docker manifest inspect ${{ env.DOCKER_IMAGE }}:${TAG} > /dev/null 2>&1; then
-            echo "skip=true" >> $GITHUB_OUTPUT
-            echo "Version ${TAG} already exists, skipping build"
-          else
-            echo "skip=false" >> $GITHUB_OUTPUT
-            echo "New version ${TAG} detected, proceeding with build"
+          set -euo pipefail
+          page=$(curl -s https://necessegame.com/server/)
+          rel=$(echo "$page" | grep -Eo 'content/server/[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}-[0-9]+/necesse-server-linux64-[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}-[0-9]+\.zip' | head -n 1 || true)
+          if [[ -z "${rel}" ]]; then
+            echo "Could not find server download URL on necessegame.com/server/"
+            exit 1
           fi
+          url="https://necessegame.com/${rel}"
+          fname=$(basename "$url")
+          # Strip prefix and suffix to get version-build, e.g. 1-0-1-20436084
+          vb=${fname#necesse-server-linux64-}
+          vb=${vb%.zip}
+          version=$(echo "$vb" | grep -Eo '^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}')
+          build=$(echo "$vb" | grep -Eo '[0-9]+$')
+          echo "Found: url=$url, version=$version, build=$build"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "build=$build" >> "$GITHUB_OUTPUT"
 
       - name: Log in to Docker Hub
-        if: steps.check_version.outputs.skip == 'false'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Check if image already exists
+        id: check
+        shell: bash
+        env:
+          VERSION: ${{ steps.scrape.outputs.version }}
+          BUILD: ${{ steps.scrape.outputs.build }}
+        run: |
+          set -euo pipefail
+          TAG="${VERSION}-${BUILD}"
+          if docker manifest inspect "${{ env.DOCKER_IMAGE }}:${TAG}" > /dev/null 2>&1; then
+            echo "Image ${{ env.DOCKER_IMAGE }}:${TAG} already exists — skipping build."
+            echo "should_build=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Tag not found; will build."
+            echo "should_build=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Docker meta
-        if: steps.check_version.outputs.skip == 'false'
         id: meta
         uses: docker/metadata-action@v5
+        if: steps.check.outputs.should_build == 'true'
         with:
           images: ${{ env.DOCKER_IMAGE }}
           tags: |
@@ -82,8 +78,8 @@ jobs:
             type=raw,value=${{ steps.scrape.outputs.version }}-${{ steps.scrape.outputs.build }}
 
       - name: Build and export to Docker hub
-        if: steps.check_version.outputs.skip == 'false'
         uses: docker/build-push-action@v6
+        if: steps.check.outputs.should_build == 'true'
         with:
           push: true
           context: .
@@ -94,3 +90,7 @@ jobs:
             url=${{ steps.scrape.outputs.url }}
             version=${{ steps.scrape.outputs.version }}
             build=${{ steps.scrape.outputs.build }}
+
+      - name: Done (no build necessary)
+        if: steps.check.outputs.should_build != 'true'
+        run: echo "Already up to date; no new server release detected."

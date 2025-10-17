@@ -2,14 +2,10 @@ name: Build docker images
 
 on:
   push:
-    branches:
-      - main
     paths:
       - 'Dockerfile'
-      - '.github/workflows/publish_images.yml'
   schedule:
-    - cron: '0 * * * *'  # Run every hour at minute 0
-  workflow_dispatch:  # Allow manual trigger
+    - cron: '0 * * * *'
 
 env:
   DOCKER_IMAGE: brammys/necesse-server

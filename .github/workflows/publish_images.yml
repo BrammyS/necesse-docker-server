@@ -24,13 +24,15 @@ jobs:
       - name: Scrape version and download URL
         id: scrape
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget libxml2-utils
-          
-          # Get the download link and version info
+          # Download the page
           wget -q -O page.html "${{ env.DOWNLOAD_PAGE_URL }}"
-          LINK=$(xmllint --html --xpath 'string(/html/body/div[2]/div/div/div[4]/div/p[1]/a[3]/@href)' page.html 2>/dev/null)
-          TEXT=$(xmllint --html --xpath 'string(/html/body/div[2]/div/div/div[4]/div/p[1]/a[3])' page.html 2>/dev/null)
+          
+          # Extract the Linux64 download link using grep/sed
+          # Looking for pattern: <a href="/content/server/.../necesse-server-linux64-....zip">Linux64 - v... build ...</a>
+          LINK=$(grep -oP 'href="(/content/server/[^"]*necesse-server-linux64[^"]*\.zip)"' page.html | head -1 | sed 's/href="\(.*\)"/\1/')
+          TEXT=$(grep -oP '<a href="/content/server/[^"]*necesse-server-linux64[^"]*\.zip">\K[^<]*' page.html | head -1)
+          
+          # Build full URL
           FULL_URL="${{ env.DOWNLOAD_PAGE_URL }}${LINK}"
           
           # Extract version and build from the text (e.g., "Linux64 - v1.0.1 build 20436084")

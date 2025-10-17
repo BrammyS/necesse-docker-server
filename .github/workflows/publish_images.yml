@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'Dockerfile'
+      - '.github/workflows/publish_images.yml'
   schedule:
     - cron: '0 * * * *'
 

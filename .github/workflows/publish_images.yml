@@ -7,43 +7,83 @@ on:
     paths:
       - 'Dockerfile'
       - '.github/workflows/publish_images.yml'
+  schedule:
+    - cron: '0 * * * *'  # Run every hour at minute 0
+  workflow_dispatch:  # Allow manual trigger
 
 env:
   DOCKER_IMAGE: brammys/necesse-server
+  DOWNLOAD_PAGE_URL: https://necessegame.com
 
 jobs:
   build:
-    name: Build ${{matrix.version}}
+    name: Build and Push Docker Image
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    strategy:
-      matrix:
-        include:
-          - version: 1-0-1
-            build: 20436084
-            url: https://necessegame.com/content/server/1-0-1-20436084/necesse-server-linux64-1-0-1-20436084.zip
-            latest: true
     steps:
       - name: Check out the repo
         uses: actions/checkout@v5
 
+      - name: Scrape version and download URL
+        id: scrape
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget libxml2-utils
+          
+          # Get the download link and version info
+          wget -q -O page.html "${{ env.DOWNLOAD_PAGE_URL }}"
+          LINK=$(xmllint --html --xpath 'string(/html/body/div[2]/div/div/div[4]/div/p[1]/a[3]/@href)' page.html 2>/dev/null)
+          TEXT=$(xmllint --html --xpath 'string(/html/body/div[2]/div/div/div[4]/div/p[1]/a[3])' page.html 2>/dev/null)
+          FULL_URL="${{ env.DOWNLOAD_PAGE_URL }}${LINK}"
+          
+          # Extract version and build from the text (e.g., "Linux64 - v1.0.1 build 20436084")
+          VERSION=$(echo "$TEXT" | grep -oP 'v\K[0-9]+\.[0-9]+\.[0-9]+')
+          BUILD=$(echo "$TEXT" | grep -oP 'build \K[0-9]+')
+          VERSION_DASHED=$(echo "$VERSION" | tr '.' '-')
+          
+          echo "url=$FULL_URL" >> $GITHUB_OUTPUT
+          echo "version=$VERSION_DASHED" >> $GITHUB_OUTPUT
+          echo "version_dotted=$VERSION" >> $GITHUB_OUTPUT
+          echo "build=$BUILD" >> $GITHUB_OUTPUT
+
+          echo "Scraped version: v$VERSION (build $BUILD)"
+          echo "Download URL: $FULL_URL"
+
+      - name: Check if version already exists
+        id: check_version
+        run: |
+          VERSION="${{ steps.scrape.outputs.version }}"
+          BUILD="${{ steps.scrape.outputs.build }}"
+          TAG="${VERSION}-${BUILD}"
+          
+          if docker manifest inspect ${{ env.DOCKER_IMAGE }}:${TAG} > /dev/null 2>&1; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "Version ${TAG} already exists, skipping build"
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "New version ${TAG} detected, proceeding with build"
+          fi
+
       - name: Log in to Docker Hub
+        if: steps.check_version.outputs.skip == 'false'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker meta
+        if: steps.check_version.outputs.skip == 'false'
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.DOCKER_IMAGE }}
           tags: |
             type=raw,value=latest
-            type=raw,value=${{matrix.version}}
-            type=raw,value=${{matrix.version}}-${{matrix.build}}
+            type=raw,value=${{ steps.scrape.outputs.version }}
+            type=raw,value=${{ steps.scrape.outputs.version }}-${{ steps.scrape.outputs.build }}
 
       - name: Build and export to Docker hub
+        if: steps.check_version.outputs.skip == 'false'
         uses: docker/build-push-action@v6
         with:
           push: true
@@ -52,6 +92,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            url=${{matrix.url}}
-            version=${{matrix.version}}
-            build=${{matrix.build}}
+            url=${{ steps.scrape.outputs.url }}
+            version=${{ steps.scrape.outputs.version }}
+            build=${{ steps.scrape.outputs.build }}

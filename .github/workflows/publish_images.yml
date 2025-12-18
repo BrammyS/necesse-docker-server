@@ -39,7 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           page=$(curl -s https://necessegame.com/server/)
-          rel=$(echo "$page" | grep -Eo 'content/server/[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}-[0-9]+/necesse-server-linux64-[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}-[0-9]+\.zip' | head -n 1 || true)
+          rel=$(echo "$page" | grep -Eo 'content/server/[0-9]+(-[0-9]+)+/necesse-server-linux64-[0-9]+(-[0-9]+)+\.zip' | head -n 1 || true)
           if [[ -z "${rel}" ]]; then
             echo "Could not find server download URL on necessegame.com/server/"
             exit 1

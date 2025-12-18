@@ -39,7 +39,8 @@ RUN rm -rf /var/cache/apk/*
 FROM base AS build
 
 # Install necesse server files.
-RUN wget ${url}
+# Force the downloaded filename to match the expected pattern so unzip succeeds.
+RUN wget -O necesse-server-linux64-${version}-${build}.zip ${url}
 RUN unzip necesse-server-linux64-${version}-${build}.zip
 RUN rm -rf ${dir}/jre
 

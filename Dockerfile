@@ -40,9 +40,13 @@ FROM base AS build
 
 # Install necesse server files.
 # Force the downloaded filename to match the expected pattern so unzip succeeds.
-RUN wget -O necesse-server-linux64-${version}-${build}.zip ${url}
-RUN unzip necesse-server-linux64-${version}-${build}.zip
-RUN rm -rf ${dir}/jre
+RUN wget -O necesse-server-linux64-${version}-${build}.zip ${url} \
+ && unzip necesse-server-linux64-${version}-${build}.zip \
+ && extracted_dir=$(ls -d necesse-server-*/ | head -n1) \
+ && extracted_dir=${extracted_dir%/} \
+ && mv "$extracted_dir" /necesse-server-${version}-${build} \
+ && rm -rf /necesse-server-${version}-${build}/jre \
+ && rm -f necesse-server-linux64-${version}-${build}.zip
 
 # Setup final image
 FROM base AS final

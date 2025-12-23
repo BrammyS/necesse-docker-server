@@ -11,5 +11,4 @@ services:
       SLOTS: 25
       PAUSE: 1
     volumes:
-      - /necesse/saves:/necesse/saves
-      - /necesse/logs:/necesse/logs
+      - ./necesse-data:/necesse

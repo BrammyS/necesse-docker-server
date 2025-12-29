@@ -11,7 +11,7 @@ And it also generates a new world.
 
 ```bash
 docker run -d \
-    -v /necesse-data:/necesse \
+    -v /necesse/saves:/necesse/saves \
     -p 14159:14159/udp \
     -e PASSWORD=strong_pass \
     -e PAUSE=1 \
@@ -22,13 +22,13 @@ docker run -d \
 
 ### Existing world
 
-First move your existing `WORLD_NAME` file to the `/necesse-data/saves` directory.
+First move your existing `WORLD_NAME` file to the `/necesse/saves` directory.
 Use the following command to start your server with your provided world.
 Be sure to replace `WORLD_NAME` with your actual world name.
 
 ```bash
 docker run -d \
-    -v /necesse-data:/necesse \
+    -v /necesse/saves:/necesse/saves \
     -p 14159:14159/udp \
     -e PASSWORD=strong_pass \
     -e PAUSE=1 \
@@ -70,12 +70,13 @@ All suported tags can be found on [dockerhub](https://hub.docker.com/r/brammys/n
 
 ### Volumes
 
-| Path       | Description                                                                    |
-| ---------- | ------------------------------------------------------------------------------ |
-| `/necesse` | The main directory for the necesse server. Contains saves, configs, mods, etc. |
+| Path       	            | Description                                                   |
+|---------------------------|-----------------------------------------------------------    |
+| `/necesse/saves`       	| The folder containing all the world saves.                    |
+| `/necesse/logs`        	| The folder containing all the logs of the server.             |
 
 ### Ports
 
-| Port        | Description                        |
-| ----------- | ---------------------------------- |
-| `14159/udp` | The game runs on UDP port `14159`. |
+| Port       	            | Description                                                   |
+|---------------------------|-----------------------------------------------------------    |
+| `14159/udp`       	    | The game runs on UDP port `14159`.                            |

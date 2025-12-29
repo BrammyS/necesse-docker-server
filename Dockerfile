@@ -13,9 +13,10 @@ ARG version
 ARG build
 ARG url
 EXPOSE 14159/udp
-VOLUME  [                 \
-    "/necesse"            \
-    ]
+VOLUME  [                       \
+    "/necesse/logs",            \
+    "/necesse/saves"            \
+]
 
 # Server configs.
 ENV WORLD=world
@@ -50,14 +51,14 @@ COPY --from=build /necesse-server-${version}-${build} /necesse/
 
 WORKDIR /necesse
 ENTRYPOINT java ${JVMARGS} \
-    -jar Server.jar \
-    -nogui -localdir \
-    -world ${WORLD} \
-    -slots ${SLOTS} \
-    -owner "${OWNER}" \
-    -motd "${MOTD}" \
-    -password "${PASSWORD}" \
-    -pausewhenempty ${PAUSE} \
-    -giveclientspower ${GIVE_CLIENTS_POWER} \
-    -logging ${LOGGING} \
-    -zipsaves ${ZIP}
+-jar Server.jar \
+-nogui -localdir \
+-world ${WORLD} \
+-slots ${SLOTS} \
+-owner "${OWNER}" \
+-motd "${MOTD}" \
+-password "${PASSWORD}" \
+-pausewhenempty ${PAUSE} \
+-giveclientspower ${GIVE_CLIENTS_POWER} \
+-logging ${LOGGING} \
+-zipsaves ${ZIP}

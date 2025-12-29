@@ -15,7 +15,8 @@ ARG url
 EXPOSE 14159/udp
 VOLUME  [                       \
     "/necesse/logs",            \
-    "/necesse/saves"            \
+    "/necesse/saves",           \
+    "/necesse/cfg"              \
 ]
 
 # Server configs.

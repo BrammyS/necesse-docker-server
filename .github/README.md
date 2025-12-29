@@ -70,13 +70,14 @@ All suported tags can be found on [dockerhub](https://hub.docker.com/r/brammys/n
 
 ### Volumes
 
-| Path       	            | Description                                                   |
-|---------------------------|-----------------------------------------------------------    |
-| `/necesse/saves`       	| The folder containing all the world saves.                    |
-| `/necesse/logs`        	| The folder containing all the logs of the server.             |
+| Path             | Description                                               |
+| ---------------- | --------------------------------------------------------- |
+| `/necesse/saves` | The folder containing all the world saves.                |
+| `/necesse/logs`  | The folder containing all the logs of the server.         |
+| `/necesse/cfg`   | The folder containing all the server configuration files. |
 
 ### Ports
 
-| Port       	            | Description                                                   |
-|---------------------------|-----------------------------------------------------------    |
-| `14159/udp`       	    | The game runs on UDP port `14159`.                            |
+| Port        | Description                        |
+| ----------- | ---------------------------------- |
+| `14159/udp` | The game runs on UDP port `14159`. |

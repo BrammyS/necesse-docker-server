@@ -1,3 +1,5 @@
+[![Docker Image Size](https://img.shields.io/docker/image-size/brammys/necesse-server/latest)](https://hub.docker.com/r/brammys/necesse-server)
+
 # Necesse-docker-server
 
 Start your own dedicated Necesse server with a **single** command!

@@ -13,11 +13,7 @@ ARG version
 ARG build
 ARG url
 EXPOSE 14159/udp
-VOLUME  [                       \
-    "/necesse/logs",            \
-    "/necesse/saves",           \
-    "/necesse/cfg"              \
-]
+VOLUME ["/necesse/logs", "/necesse/saves", "/necesse/cfg"]
 
 # Server configs.
 ENV WORLD=world
@@ -32,17 +28,18 @@ ENV ZIP=1
 ENV JVMARGS=""
 
 # Install java, wget and unzip and cleanup package cache.
-RUN apk --update add wget unzip 
-RUN apk add openjdk17
-RUN rm -rf /var/cache/apk/*
+RUN apk --update add wget unzip && \
+    apk add openjdk17 && \
+    rm -rf /var/cache/apk/*
 
 # Setup build image
 FROM base AS build
 
 # Install necesse server files.
-RUN wget ${url}
-RUN unzip necesse-server-linux64-${version}-${build}.zip
-RUN rm -rf ${dir}/jre
+RUN wget -O /tmp/necesse-server.zip "${url}" && \
+    unzip /tmp/necesse-server.zip && \
+    rm -rf "/necesse-server-${version}-${build}/jre" && \
+    rm -f /tmp/necesse-server.zip
 
 # Setup final image
 FROM base AS final
@@ -51,15 +48,5 @@ FROM base AS final
 COPY --from=build /necesse-server-${version}-${build} /necesse/
 
 WORKDIR /necesse
-ENTRYPOINT java ${JVMARGS} \
--jar Server.jar \
--nogui -localdir \
--world ${WORLD} \
--slots ${SLOTS} \
--owner "${OWNER}" \
--motd "${MOTD}" \
--password "${PASSWORD}" \
--pausewhenempty ${PAUSE} \
--giveclientspower ${GIVE_CLIENTS_POWER} \
--logging ${LOGGING} \
--zipsaves ${ZIP}
+
+ENTRYPOINT ["sh", "-c", "exec java ${JVMARGS} -jar Server.jar -nogui -localdir -world \"${WORLD}\" -slots \"${SLOTS}\" -owner \"${OWNER}\" -motd \"${MOTD}\" -password \"${PASSWORD}\" -pausewhenempty \"${PAUSE}\" -giveclientspower \"${GIVE_CLIENTS_POWER}\" -logging \"${LOGGING}\" -zipsaves \"${ZIP}\""]

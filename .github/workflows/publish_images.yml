@@ -42,9 +42,12 @@ jobs:
 
           page=$(curl -fsSL https://necessegame.com/server/)
 
-          url=$(echo "$page" | \
-            grep -oE 'https://[^"]*necesse-server-linux64-[0-9]+-[0-9]+-[0-9]+-[0-9]+\.zip[^"]*' | \
-            head -n1 || true)
+          url=$(
+            echo "$page" |
+            grep -oE 'https://[^"]*necesse-server-linux64-[^"]*' |
+            head -n1 |
+            sed 's/&amp;/\&/g'
+          )
 
           if [[ -z "$url" ]]; then
             echo "Could not find Linux server download URL on necessegame.com/server/"

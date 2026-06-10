@@ -41,10 +41,12 @@ jobs:
           set -euo pipefail
 
           page=$(curl -fsSL https://necessegame.com/server/)
-
-          url=$(printf '%s\n' "$page" |
-            grep -m1 -oE 'https://[^"]*necesse-server-linux64-[^"]*' |
-            sed 's/&amp;/\&/g')
+          
+          url=$(
+            sed -nE 's/.*(https:\/\/[^"]*necesse-server-linux64-[^"]*).*/\1/p' <<<"$page" |
+            sed 's/&amp;/\&/g' |
+            head -n1
+          )
 
           if [[ -z "$url" ]]; then
             echo "Could not find Linux server download URL on necessegame.com/server/"

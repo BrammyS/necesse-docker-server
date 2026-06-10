@@ -21,6 +21,7 @@ jobs:
     name: Build latest Necesse server
     runs-on: ubuntu-latest
     timeout-minutes: 30
+
     steps:
       - name: Check out the repo
         uses: actions/checkout@v6
@@ -38,20 +39,29 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          page=$(curl -s https://necessegame.com/server/)
-          rel=$(echo "$page" | grep -Eo 'content/server/[0-9]+(-[0-9]+)+/necesse-server-linux64-[0-9]+(-[0-9]+)+\.zip' | head -n 1 || true)
-          if [[ -z "${rel}" ]]; then
-            echo "Could not find server download URL on necessegame.com/server/"
+
+          page=$(curl -fsSL https://necessegame.com/server/)
+
+          url=$(echo "$page" | \
+            grep -oE 'https://[^"]*necesse-server-linux64-[0-9]+-[0-9]+-[0-9]+-[0-9]+\.zip[^"]*' | \
+            head -n1 || true)
+
+          if [[ -z "$url" ]]; then
+            echo "Could not find Linux server download URL on necessegame.com/server/"
             exit 1
           fi
-          url="https://necessegame.com/${rel}"
-          fname=$(basename "$url")
-          # Strip prefix and suffix to get version-build, e.g. 1-0-1-20436084
-          vb=${fname#necesse-server-linux64-}
-          vb=${vb%.zip}
-          version=$(echo "$vb" | grep -Eo '^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}')
-          build=$(echo "$vb" | grep -Eo '[0-9]+$')
-          echo "Found: url=$url, version=$version, build=$build"
+
+          vb=$(echo "$url" | \
+            grep -oE 'necesse-server-linux64-[0-9]+-[0-9]+-[0-9]+-[0-9]+\.zip' | \
+            sed -E 's/necesse-server-linux64-([0-9-]+)\.zip/\1/')
+
+          version=$(echo "$vb" | cut -d- -f1-3)
+          build=$(echo "$vb" | cut -d- -f4)
+
+          echo "Found: url=$url"
+          echo "Version: $version"
+          echo "Build: $build"
+
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "build=$build" >> "$GITHUB_OUTPUT"
@@ -77,13 +87,17 @@ jobs:
           BUILD: ${{ steps.scrape.outputs.build }}
         run: |
           set -euo pipefail
+
           TAG="${VERSION}-${BUILD}"
+
           if ! docker manifest inspect "${{ env.DOCKER_IMAGE }}:${TAG}" >/tmp/manifest.json 2>/dev/null; then
             echo "Tag not found; will build."
             echo "should_build=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          if grep -q '"architecture":\s*"arm64"' /tmp/manifest.json && grep -q '"architecture":\s*"amd64"' /tmp/manifest.json; then
+
+          if grep -q '"architecture":\s*"arm64"' /tmp/manifest.json && \
+             grep -q '"architecture":\s*"amd64"' /tmp/manifest.json; then
             echo "Both amd64 and arm64 already present — skipping build."
             echo "should_build=false" >> "$GITHUB_OUTPUT"
           else
@@ -93,8 +107,8 @@ jobs:
 
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v6
         if: steps.check.outputs.should_build == 'true'
+        uses: docker/metadata-action@v6
         with:
           images: |
             ${{ env.DOCKER_IMAGE }}
@@ -105,8 +119,8 @@ jobs:
             type=raw,value=${{ steps.scrape.outputs.version }}-${{ steps.scrape.outputs.build }}
 
       - name: Build and push images (Docker Hub + GHCR)
-        uses: docker/build-push-action@v7
         if: steps.check.outputs.should_build == 'true'
+        uses: docker/build-push-action@v7
         with:
           push: true
           platforms: linux/amd64,linux/arm64

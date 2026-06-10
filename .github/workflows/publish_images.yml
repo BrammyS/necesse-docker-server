@@ -39,31 +39,36 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
+          
           page=$(curl -fsSL https://necessegame.com/server/)
           
           url=$(
-            sed -nE 's/.*(https:\/\/[^"]*necesse-server-linux64-[^"]*).*/\1/p' <<<"$page" |
-            sed 's/&amp;/\&/g' |
-            head -n1
+            grep -oEm1 'https://[^"]*necesse-server-linux64-[^"]*' <<<"$page" |
+            sed 's/&amp;/\&/g'
           )
-
+          
           if [[ -z "$url" ]]; then
             echo "Could not find Linux server download URL on necessegame.com/server/"
             exit 1
           fi
-
-          vb=$(echo "$url" | \
-            grep -oE 'necesse-server-linux64-[0-9]+-[0-9]+-[0-9]+-[0-9]+\.zip' | \
-            sed -E 's/necesse-server-linux64-([0-9-]+)\.zip/\1/')
-
-          version=$(echo "$vb" | cut -d- -f1-3)
-          build=$(echo "$vb" | cut -d- -f4)
-
+          
+          vb=$(
+            grep -oE 'necesse-server-linux64-[0-9]+-[0-9]+-[0-9]+-[0-9]+\.zip' <<<"$url" |
+            sed -E 's/necesse-server-linux64-([0-9-]+)\.zip/\1/'
+          )
+          
+          if [[ -z "$vb" ]]; then
+            echo "Could not parse version/build from URL: $url"
+            exit 1
+          fi
+          
+          version=$(cut -d- -f1-3 <<<"$vb")
+          build=$(cut -d- -f4 <<<"$vb")
+          
           echo "Found: url=$url"
           echo "Version: $version"
           echo "Build: $build"
-
+          
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "build=$build" >> "$GITHUB_OUTPUT"
